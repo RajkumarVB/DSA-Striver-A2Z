@@ -1,24 +1,37 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class LargestSubArrayWithSumK {
     public static void main(String[] args) {
-        int[] inp = {2,3,5,1,9};
-        int k = 10;
-//        int[] inp = {2,3,5};
-//        int k = 1;
+        int[] inp = {2,0,0,3};
+        int k = 3;
         System.out.println(solve(inp, k));
     }
     private static int solve(int[] inp, int k ) {
         int n = inp.length;
         int res = -1 ;
-        for (int i = 0; i <n; i++) {
-            int sum  =0 ;
-            for (int j = i; j < n; j++) {
-                sum += inp[j];
-                if (sum == k){
-                    res = Math.max(res, j-i+1);
+        HashMap<Long,Integer> prefixSum = new HashMap<>();
+        long sum  =0 ;
+        for(int i =0; i<n ; i++){
+            sum+= inp[i];
+            if (sum ==k){
+                res = Math.max(res,i+1);
+            } else {
+                if(prefixSum.containsKey(sum-k)){
+                    int len = i-prefixSum.get(sum-k);
+                    res= Math.max(res,len);
                 }
             }
+            if(!prefixSum.containsKey(sum)) prefixSum.put(sum,i);
         }
         return res;
+    }
+
+    private static void printHashMapContents(HashMap<Long, Integer> hashMap){
+        for(var obj : hashMap.entrySet()){
+            System.out.print(obj.getKey() + "->" + obj.getValue() + " ");
+        }
+        System.out.println();
     }
 
     private static void printAllSubArrays(int[] inp) {
