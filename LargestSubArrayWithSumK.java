@@ -10,10 +10,11 @@ public class LargestSubArrayWithSumK {
         int n = inp.length;
         int res = -1 ;
         for (int i = 0; i <n; i++) {
+            int sum  =0 ;
             for (int j = i; j < n; j++) {
-                int sum = calculateSum(inp,i,j);
-                if(sum ==k){
-                    res = Math.max(res,j-i+1);
+                sum += inp[j];
+                if (sum == k){
+                    res = Math.max(res, j-i+1);
                 }
             }
         }
