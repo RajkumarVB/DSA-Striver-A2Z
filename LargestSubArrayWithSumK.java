@@ -2,58 +2,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LargestSubArrayWithSumK {
-    public static void main(String[] args) {
-        int[] inp = {2,0,0,3};
-        int k = 3;
-        System.out.println(solve(inp, k));
-    }
-    private static int solve(int[] inp, int k ) {
-        int n = inp.length;
+    public static int longestSubarrayWithSumK(int []a, long k) {
+        // Write your code here
+        int n = a.length;
         int res = -1 ;
-        HashMap<Long,Integer> prefixSum = new HashMap<>();
-        long sum  =0 ;
-        for(int i =0; i<n ; i++){
-            sum+= inp[i];
-            if (sum ==k){
+        HashMap<Long,Integer> prevSum = new HashMap<>();
+        long sum = 0 ;
+        for(int i =0; i<n; i++){
+            sum += a[i];
+            if(sum ==k){
                 res = Math.max(res,i+1);
-            } else {
-                if(prefixSum.containsKey(sum-k)){
-                    int len = i-prefixSum.get(sum-k);
-                    res= Math.max(res,len);
-                }
             }
-            if(!prefixSum.containsKey(sum)) prefixSum.put(sum,i);
+            long rem = sum -k;
+            if(prevSum.containsKey(rem)){
+                int len = i - prevSum.get(rem);
+                res = Math.max(res,len);
+            }
+            if(a[i] != 0) prevSum.put(sum,i);
         }
         return res;
     }
-
-    private static void printHashMapContents(HashMap<Long, Integer> hashMap){
-        for(var obj : hashMap.entrySet()){
-            System.out.print(obj.getKey() + "->" + obj.getValue() + " ");
-        }
-        System.out.println();
-    }
-
-    private static void printAllSubArrays(int[] inp) {
-        int n = inp.length;
-        for (int i = 0; i <n; i++) {
-            for (int j = i; j < n; j++) {
-                printArray(inp,i,j);
-            }
-        }
-    }
-
-    private static void printArray(int[] inp, int i, int j) {
-        for(int x =i ; x<=j ; x++){
-            System.out.print(inp[x] + " ");
-        }
-        System.out.println();
-    }
-    private static int calculateSum(int[] inp, int i, int j) {
-        int sum = 0 ;
-        for(int x = i ; x<=j; x++){
-            sum += inp[x];
-        }
-        return sum;
+    public static void main(String[] args) {
+        int[] a = {0,2,5,3,3,4,4,3,0,5,5,4,4,4,3,2,0,2,3,1,3,0,4,3,1,4,5,2,4,3,1,4,5,0,3,4,0};
+        // Expected answer is 21
+        System.out.println(longestSubarrayWithSumK(a,52));
     }
 }
