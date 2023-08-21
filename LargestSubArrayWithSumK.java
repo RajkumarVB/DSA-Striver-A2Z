@@ -3,22 +3,18 @@ import java.util.Map;
 
 public class LargestSubArrayWithSumK {
     public static int longestSubarrayWithSumK(int []a, long k) {
-        // Write your code here
         int n = a.length;
-        int res = -1 ;
-        HashMap<Long,Integer> prevSum = new HashMap<>();
-        long sum = 0 ;
-        for(int i =0; i<n; i++){
-            sum += a[i];
-            if(sum ==k){
-                res = Math.max(res,i+1);
+        int left = 0, right = 0 ;
+        int res = -1;
+        long sum = 0;
+        while(right < n){
+            sum += a[right];
+            while(left <= right && sum > k){
+                sum -= a[left];
+                left ++;
             }
-            long rem = sum -k;
-            if(prevSum.containsKey(rem)){
-                int len = i - prevSum.get(rem);
-                res = Math.max(res,len);
-            }
-            if(a[i] != 0) prevSum.put(sum,i);
+            if(sum ==k) res = Math.max(res,right - left +1);
+            right++;
         }
         return res;
     }
